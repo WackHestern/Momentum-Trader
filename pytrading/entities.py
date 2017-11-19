@@ -10,9 +10,7 @@ logger = logging.getLogger(__name__)
 class Portfolio(object):
     def __init__(self, cash, positions={}):
         self.cash = cash
-        print("==============================", self.cash)
         self.positions = positions
-        print(positions)
 
     def update(self, security, quantity, price, fail_method):
         if quantity * price > self.cash:

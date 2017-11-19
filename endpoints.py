@@ -19,9 +19,17 @@ def api_root():
         return json.dumps({'message':'missing securites'})
     if 'start_cash' not in data:
         return json.dumps({'message':'missing start_cash'})
+    if 'strategy' not in data:
+        return json.dumps({'message':'missing strategy'})
     securities = data["securities"]
     startingCash = data['start_cash']
-    trader = mt.MomentumStrategy(startingCash)
+    strategy = data['strategy']
+    if strategy == 'momentum':
+        trader = mt.MomentumStrategy(startingCash)
+    elif strategy == 'random':
+        trader = mt.randomStrategy(startingCash)
+    else:
+        return json.dumps({'message':'unimplemented strategy'})
     trader.setUniverse(securities)
     try:
         trader.run()
