@@ -121,6 +121,7 @@ class BacktestingEnvironment(object):
         rows = max(len(s) for s in self.data.values())
         for i in range(self.current_day, rows - 1):
             # rows - 1 is the last day on which trading is possible
+            logger.info("======Day " + str(i) + "=============")
             self.current_day = i
             for security in self.strategy.universe:
                 if len(self.data[security]) > i:  # New data available?
@@ -148,7 +149,7 @@ class BacktestingEnvironment(object):
         self.portfolio.update(security, quantity, price, self.fail)
 
     def order_target_percent(self, security, percent):
-        #logger.info('Ordering {} to {}%.'.format(security, percent*100))
+        logger.info('Ordering {} to {}%.'.format(security, percent*100))
 
         if percent < 0.0 or percent > 1.0:
             self.fail('Percent must be between 0.0 and 1.0!', ValueError)
