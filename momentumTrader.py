@@ -36,4 +36,4 @@ class MomentumStrategy(AbstractStrategy):
 #strategy = MomentumStrategy()
 #strategy.setUniverse(['GOOGL','TSLA', 'MSFT', 'NVDA', 'AMD', 'INTC' ])
 #strategy.run()
-#print(strategy.jsonifyNetworth())
+#strategy.jsonifyNetworth()
