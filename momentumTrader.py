@@ -1,28 +1,39 @@
-from flask import Flask, json, request
-import os
-
-app = Flask(__name__)
-
-# Post a json to flask server
+# -*- coding: utf-8 -*-
+from pytrading.entities import AbstractStrategy
+from pytrading.indicators import with_series
+import json
 
 
-@app.route('/', methods=['Post', 'Get'])
-def api_root():
-    # validate that user sends in a json
-    #if request.headers['Content-Type'] != 'application/json':
-    #    return "Please post a JSON"
-
-    data = json.loads(json.dumps(request.json))
-
-    # data is a map of all the json input
-
-    # do whatever computation you want here
-
-    # making something to return
-    returnThing = {'message': 'look its a message'}
-    return json.dumps(returnThing)
+@with_series('close')
+def momentum(series):
+    return series - series.shift()  # Change to previous day
 
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 1337))
-    app.run(debug=True, host='0.0.0.0', port=port)
+class MomentumStrategy(AbstractStrategy):
+    def setUniverse(self, universe):
+        self.universe=universe
+    def initialize(self):
+        #self.setUniverse(['GOOGL','TSLA', 'MSFT', 'NVDA', 'AMD', 'INTC' ])
+        self.skip_days=1  # Automate this
+        self.indicators={ 'MOMENTUM': momentum }
+        self.netWorth = []
+
+    def handle_data(self, data, indicators=None):
+        sec_weight = 1 / len(self.universe)
+
+        for sec in self.universe:
+            if indicators[sec]['MOMENTUM'][-1] > 0.0:
+                # Buy at next price, if security closed with an uptick
+                self.environment.order_target_percent(sec, sec_weight)
+            else:
+                # Sell at next price, if security closed with a downtick
+                self.environment.order_target_percent(sec, 0.0)
+        networth = self.environment.portfolio.total_value(self.environment._next_prices())
+        self.netWorth.append(networth)
+    def jsonifyNetworth(self):
+       return json.dumps(self.netWorth)
+
+#strategy = MomentumStrategy()
+#strategy.setUniverse(['GOOGL','TSLA', 'MSFT', 'NVDA', 'AMD', 'INTC' ])
+#strategy.run()
+#print(strategy.jsonifyNetworth())

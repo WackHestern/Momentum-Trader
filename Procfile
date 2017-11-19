@@ -1,1 +1,1 @@
-web: python momentumTrader.py
+web: python endpoints.py
