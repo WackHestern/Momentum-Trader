@@ -31,7 +31,7 @@ class MomentumStrategy(AbstractStrategy):
         networth = self.environment.portfolio.total_value(self.environment._next_prices())
         self.netWorth.append(networth)
     def jsonifyNetworth(self):
-       return json.dumps(self.netWorth)
+       return self.netWorth
 
 #strategy = MomentumStrategy()
 #strategy.setUniverse(['GOOGL','TSLA', 'MSFT', 'NVDA', 'AMD', 'INTC' ])
