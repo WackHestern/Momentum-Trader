@@ -6,9 +6,9 @@ def load(symbol):
     # TODO: Improve Error Handling
     ts = TimeSeries(key='5UQ13GR7ST5S6ZKB', output_format = 'pandas')
     try:
-        data, meta_data = ts.get_daily_adjusted(symbol, outputsize='compact') 
+        data, meta_data = ts.get_daily_adjusted(symbol.upper(), outputsize='compact') 
     except:
-        raise ValueError('Symbol not found!')
+        raise ValueError('Symbol not found! Symbol: ' + symbol.upper())
 
     if data is None:
         raise ValueError('No data found! Could be a wrong provider.')
