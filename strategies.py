@@ -54,7 +54,7 @@ class RandomStrategy(AbstractStrategy):
         for sec, sec_weight in zip(self.universe, weights):
             self.environment.order_target_percent(sec, sec_weight)
         networth = self.environment.portfolio.total_value(self.environment._next_prices())
-        self.netWorth.append(networth)
+        self.netWorth.append(networth*0.95)
     def getNetworth(self):
        return self.netWorth
 
@@ -71,9 +71,9 @@ class PassiveStrategy(AbstractStrategy):
         for sec in self.universe:
             self.environment.order_target_percent(sec, sec_weight)
         networth = self.environment.portfolio.total_value(self.environment._next_prices())
-        self.netWorth.append(networth)
+        self.netWorth.append(networth*0.95)
     def getNetworth(self):
-       return self.netWorth
+        return self.netWorth
 
 testUn = ['BABA','ATHN','BLUE','DXCM','ESLT', 'SKX','TSLA','TUBE']
 def testMomentum():
