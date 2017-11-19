@@ -17,8 +17,11 @@ def api_root():
     # data is a map of all the json input
     if 'securities' not in data:
         return json.dumps({'message':'missing securites'})
+    if 'start_cash' not in data:
+        return json.dumps({'message':'missing starting_cash'})
     securities = data["securities"]
-    trader = mt.MomentumStrategy()
+    startingCash = data['starting_cash']
+    trader = mt.MomentumStrategy(startingCash)
     trader.setUniverse(securities)
     try:
         trader.run()
@@ -26,7 +29,7 @@ def api_root():
         return json.dumps({'message': 'FAILURE'})
 
     # making something to return
-    return json.dumps({'networth_over_time': trader.jsonifyNetworth()})
+    return json.dumps({'networth_over_time': trader.getNetworth()})
 
 
 if __name__ == '__main__':

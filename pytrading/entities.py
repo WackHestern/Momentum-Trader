@@ -8,16 +8,18 @@ logger = logging.getLogger(__name__)
 
 
 class Portfolio(object):
-    def __init__(self, cash=100000.0, positions={}):
+    def __init__(self, cash, positions={}):
         self.cash = cash
+        print("==============================", self.cash)
         self.positions = positions
+        print(positions)
 
     def update(self, security, quantity, price, fail_method):
         if quantity * price > self.cash:
-            # fail_method('Not enough cash to execute order. Security: {}, '
-            #             'Quantity: {}, Price: {}, Portfolio Cash: {}'
-            #             .format(security, quantity, price, self.cash),
-            #             ValueError)
+            fail_method('Not enough cash to execute order. Security: {}, '
+                        'Quantity: {}, Price: {}, Portfolio Cash: {}'
+                        .format(security, quantity, price, self.cash),
+                        ValueError)
             return
         self.positions.setdefault(security, Position()).update(quantity, price)
         self.cash -= quantity * price
@@ -27,7 +29,7 @@ class Portfolio(object):
         for s, p in self.positions.items():
             value += prices[s] * p.quantity
         return value + self.cash
-
+    
     def position_quantity(self, security):
         if security in self.positions:
             return self.positions[security].quantity
@@ -59,11 +61,11 @@ class Position(object):
 
 
 class AbstractStrategy(ABC):
-    def __init__(self, environment=None):
+    def __init__(self, cash, environment=None):
         self.universe = []
         self.skip_days = 0
         self.indicators = {}
-        self.portfolio = Portfolio()
+        self.portfolio = Portfolio(cash,{})
         self.environment = (environment or BacktestingEnvironment)
 
     def run(self, mode='graceful'):
