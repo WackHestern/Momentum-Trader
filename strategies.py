@@ -35,7 +35,7 @@ class MomentumStrategy(AbstractStrategy):
     def getNetworth(self):
        return self.netWorth
 
-class randomStrategy(AbstractStrategy):
+class RandomStrategy(AbstractStrategy):
     def setUniverse(self, universe):
         self.universe=universe
     def initialize(self):
@@ -58,6 +58,23 @@ class randomStrategy(AbstractStrategy):
     def getNetworth(self):
        return self.netWorth
 
+class PassiveStrategy(AbstractStrategy):
+    def setUniverse(self, universe):
+        self.universe=universe
+    def initialize(self):
+        #self.setUniverse(['GOOGL','TSLA', 'MSFT', 'NVDA', 'AMD', 'INTC' ])
+        self.indicators={'MOMENTUM':momentum}
+        self.netWorth = []
+
+    def handle_data(self, data, indicators=None):
+        sec_weight = 1/len(self.universe)
+        for sec in self.universe:
+            self.environment.order_target_percent(sec, sec_weight)
+        networth = self.environment.portfolio.total_value(self.environment._next_prices())
+        self.netWorth.append(networth)
+    def getNetworth(self):
+       return self.netWorth
+
 testUn = ['BABA','ATHN','BLUE','DXCM','ESLT', 'SKX','TSLA','TUBE']
 def testMomentum():
     strategy = MomentumStrategy(100000)
@@ -65,7 +82,12 @@ def testMomentum():
     strategy.run()
     print(strategy.getNetworth())
 def testRandom():
-    strategy = randomStrategy(100000)
+    strategy = RandomStrategy(100000)
+    strategy.setUniverse(testUn)
+    strategy.run()
+    print(strategy.getNetworth())
+def testPassive():
+    strategy = PassiveStrategy(100000)
     strategy.setUniverse(testUn)
     strategy.run()
     print(strategy.getNetworth())

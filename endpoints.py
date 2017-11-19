@@ -1,6 +1,6 @@
 from flask import Flask, json, request
 import os
-import momentumTrader as mt
+import strategies as s
 
 app = Flask(__name__)
 
@@ -25,9 +25,11 @@ def api_root():
     startingCash = data['start_cash']
     strategy = data['strategy']
     if strategy == 'momentum':
-        trader = mt.MomentumStrategy(startingCash)
+        trader = s.MomentumStrategy(startingCash)
     elif strategy == 'random':
-        trader = mt.randomStrategy(startingCash)
+        trader = s.RandomStrategy(startingCash)
+    elif strategy == 'passive':
+        trader = s.PassiveStrategy(startingCash)
     else:
         return json.dumps({'message':'unimplemented strategy'})
     trader.setUniverse(securities)
