@@ -18,9 +18,9 @@ def api_root():
     if 'securities' not in data:
         return json.dumps({'message':'missing securites'})
     if 'start_cash' not in data:
-        return json.dumps({'message':'missing starting_cash'})
+        return json.dumps({'message':'missing start_cash'})
     securities = data["securities"]
-    startingCash = data['starting_cash']
+    startingCash = data['start_cash']
     trader = mt.MomentumStrategy(startingCash)
     trader.setUniverse(securities)
     try:
