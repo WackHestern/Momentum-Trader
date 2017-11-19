@@ -26,7 +26,7 @@ def api_root():
         return json.dumps({'message': 'FAILURE'})
 
     # making something to return
-    return json.dumps({'networth_over_time', trader.jsonifyNetworth})
+    return json.dumps({'networth_over_time', trader.jsonifyNetworth()})
 
 
 if __name__ == '__main__':
