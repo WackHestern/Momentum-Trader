@@ -19,7 +19,7 @@ def api_root():
         return json.dumps({'message':'missing start_cash'})
     if 'strategy' not in data:
         return json.dumps({'message':'missing strategy'})
-    securities = str(data["securities"])
+    securities = list(map(int, data["securities"]))
     startingCash = int(data['start_cash'])
     strategy = str(data['strategy'])
     if strategy == 'momentum':
