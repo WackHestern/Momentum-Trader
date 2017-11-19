@@ -5,7 +5,6 @@ import momentumTrader as mt
 app = Flask(__name__)
 
 # Post a json to flask server
-trader = 
 
 @app.route('/Tradium/projection', methods=['Post', 'Get'])
 def api_root():
