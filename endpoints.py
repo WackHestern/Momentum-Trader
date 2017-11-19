@@ -9,10 +9,8 @@ app = Flask(__name__)
 @app.route('/Tradium/projection', methods=['Post', 'Get'])
 def api_root():
     # validate that user sends in a json
-    if not request.headers or request.headers['Content-Type'] != 'application/json':
-        return json.dumps({'message': 'invalid post'})
 
-    data = json.loads(json.dumps(request.json))
+    data = json.loads(request.data)
 
     # data is a map of all the json input
     if 'securities' not in data:
