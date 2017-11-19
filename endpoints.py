@@ -19,9 +19,9 @@ def api_root():
         return json.dumps({'message':'missing start_cash'})
     if 'strategy' not in data:
         return json.dumps({'message':'missing strategy'})
-    securities = data["securities"]
-    startingCash = data['start_cash']
-    strategy = data['strategy']
+    securities = str(data["securities"])
+    startingCash = int(data['start_cash'])
+    strategy = str(data['strategy'])
     if strategy == 'momentum':
         trader = s.MomentumStrategy(startingCash)
     elif strategy == 'random':
