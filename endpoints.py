@@ -34,7 +34,7 @@ def api_root():
     try:
         trader.run()
     except Exception as e:
-        return json.dumps({'message': 'FAILURE'})
+        return json.dumps({'message': 'FAILURE: '+ e})
 
     # making something to return
     return json.dumps({'networth_over_time': trader.getNetworth()})
