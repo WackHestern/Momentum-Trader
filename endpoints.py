@@ -18,7 +18,7 @@ def api_root():
     # data is a map of all the json input
     if 'securities' not in data:
         return json.dumps({'message':'missing securites'})
-    securities = data["securities"]`
+    securities = data["securities"]
     trader = mt.MomentumStrategy()
     trader.setUniverse(securities)
     try:
